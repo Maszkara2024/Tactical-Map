@@ -10,74 +10,55 @@
             --panel-bg: #151518;
             --gr-blue: #00d4ff;
             --bl-red: #ff3e3e;
+            --smoke-yellow-actual: #FFD700; 
             --smoke-yellow: #fcf14a;
+            --c4-orange: #ff9d00;
             --accent: #00ff88;
             --border: #333;
         }
 
         body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--bg-dark); color: white; display: flex; height: 100vh; overflow: hidden; }
-        
-        #sidebar { 
-            width: 290px; background-color: var(--panel-bg); 
-            border-right: 2px solid var(--border); display: flex; 
-            flex-direction: column; padding: 15px; z-index: 10; overflow-y: auto; 
-        }
-
+        #sidebar { width: 290px; background-color: var(--panel-bg); border-right: 2px solid var(--border); display: flex; flex-direction: column; padding: 15px; z-index: 10; overflow-y: auto; }
         #map-container { flex-grow: 1; position: relative; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden; }
-        canvas { max-width: 95%; max-height: 95%; box-shadow: 0 0 30px #000; touch-action: none; }
+        canvas { max-width: 95%; max-height: 95%; box-shadow: 0 0 30px #000; touch-action: none; cursor: crosshair; }
 
-        /* --- MOBILE RESPONSIVE BRIDGE --- */
         @media (max-width: 768px) {
             body { flex-direction: column; }
-            #sidebar { 
-                width: 100%; height: 45vh; border-right: none; 
-                border-top: 2px solid var(--border); order: 2; 
-                padding: 10px; box-sizing: border-box;
-            }
-            #map-container { height: 55vh; order: 1; }
-            .icon-grid { grid-template-columns: repeat(5, 1fr); gap: 10px; }
-            .tactical-icon { width: 45px; height: 45px; font-size: 1.2rem; }
-            button { padding: 15px 5px; font-size: 0.8rem; }
+            #sidebar { width: 100%; height: 48vh; border-right: none; border-top: 2px solid var(--border); order: 2; padding: 10px; box-sizing: border-box; }
+            #map-container { height: 52vh; order: 1; }
+            button { padding: 8px 4px; font-size: 0.65rem; }
         }
 
-        .creator-tag { text-align: center; padding: 10px; border: 1px solid var(--accent); border-radius: 4px; margin-bottom: 20px; background: rgba(0, 255, 136, 0.05); }
-        .creator-tag span { display: block; font-size: 0.65rem; color: #888; text-transform: uppercase; }
-        .creator-tag strong { display: block; font-size: 1.2rem; color: var(--accent); text-shadow: 0 0 10px rgba(0, 255, 136, 0.4); }
+        .creator-tag { text-align: center; padding: 8px; border: 1px solid var(--accent); border-radius: 4px; margin-bottom: 15px; background: rgba(0, 255, 136, 0.05); }
+        .creator-tag strong { display: block; font-size: 1.1rem; color: var(--accent); }
 
-        .section-title { font-size: 0.75rem; font-weight: bold; margin: 15px 0 5px 0; text-transform: uppercase; color: #aaa; }
-        select { width: 100%; padding: 10px; background: #222; color: white; border: 1px solid var(--border); margin-bottom: 10px; border-radius: 4px; font-size: 16px; }
+        .section-title { font-size: 0.7rem; font-weight: bold; margin: 12px 0 5px 0; text-transform: uppercase; color: #888; border-bottom: 1px solid #222; }
+        select { width: 100%; padding: 10px; background: #222; color: white; border: 1px solid var(--border); margin-bottom: 10px; border-radius: 4px; }
         
-        .tool-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
-        .toggle-btn { width: 40px; height: 40px; background: #222; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-        .toggle-btn.off { opacity: 0.3; filter: grayscale(1); }
+        .icon-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+        .tactical-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .gr-icon { background: rgba(0, 212, 255, 0.15); border: 2px solid var(--gr-blue); color: var(--gr-blue); }
+        .bl-icon { background: rgba(255, 62, 62, 0.15); border: 2px solid var(--bl-red); color: var(--bl-red); }
         
-        .icon-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
-        .tactical-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: grab; font-weight: bold; user-select: none; touch-action: none; }
-        .gr-icon { background: rgba(0, 212, 255, 0.2); border: 2px solid var(--gr-blue); color: var(--gr-blue); }
-        .bl-icon { background: rgba(255, 62, 62, 0.2); border: 2px solid var(--bl-red); color: var(--bl-red); }
+        .tactical-icon.active { background: white; color: black; transform: scale(1.1); }
 
-        .controls { margin-top: auto; display: flex; flex-direction: column; gap: 8px; padding-top: 20px; }
-        button, .upload-label { padding: 10px; background: #222; border: 1px solid var(--border); color: white; cursor: pointer; text-align: center; text-transform: uppercase; font-size: 0.7rem; border-radius: 4px; font-weight: bold; flex-grow: 1; }
-        button.active { background: #444; border-color: #fff; box-shadow: 0 0 8px rgba(255,255,255,0.3); }
+        .controls { margin-top: auto; display: flex; flex-direction: column; gap: 5px; padding-top: 10px; }
+        button { padding: 8px; background: #1a1a1c; border: 1px solid var(--border); color: white; cursor: pointer; text-transform: uppercase; font-size: 0.65rem; border-radius: 4px; font-weight: bold; transition: 0.2s; }
+        button.active { background: #333; border-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.2); }
         
-        .pencil-blue-btn { border-color: var(--gr-blue) !important; color: var(--gr-blue) !important; }
-        .pencil-red-btn { border-color: var(--bl-red) !important; color: var(--bl-red) !important; }
-        .smoke-yellow-btn { border-color: var(--smoke-yellow) !important; color: var(--smoke-yellow) !important; }
-        #file-input { display: none; }
+        .color-row { display: flex; gap: 4px; margin-bottom: 4px; }
     </style>
 </head>
 <body>
 
     <aside id="sidebar">
         <div class="creator-tag">
-            <span>Made By</span>
             <strong>MEERH.</strong>
-            <div style="font-size: 0.8rem; font-weight: bold; color: #fff; margin-top: 5px;">CLAN: CLICKxBUILD</div>
+            <div style="font-size: 0.7rem; color: #fff; margin-top: 3px;">CLICKxBUILD</div>
         </div>
         
-        <span class="section-title">Select Map</span>
         <select id="map-select">
-            <option value="">-- Choose Map --</option>
+            <option value="">-- Select Map --</option>
             <option value="subbase.png">Sub Base</option>
             <option value="blackwidow.png">Black Widow</option>
             <option value="ankara.png">Ankara</option>
@@ -87,42 +68,45 @@
             <option value="eagleeye2.png">Eagle Eye 2</option>
         </select>
 
-        <span class="section-title" style="color: var(--gr-blue)">GR Units & Pencil</span>
-        <div class="icon-grid">
-            <div class="tactical-icon gr-icon" draggable="true" data-team="gr">1</div>
-            <div class="tactical-icon gr-icon" draggable="true" data-team="gr">2</div>
-            <div class="tactical-icon gr-icon" draggable="true" data-team="gr">3</div>
-            <div class="tactical-icon gr-icon" draggable="true" data-team="gr">4</div>
-            <div class="tactical-icon gr-icon" draggable="true" data-team="gr">5</div>
-        </div>
-        <div class="tool-row" style="margin-top: 5px;">
-            <div class="toggle-btn" id="toggle-pencil-blue">👁️</div>
-            <button id="pencil-blue-btn" class="pencil-blue-btn">Blue Pencil</button>
+        <span class="section-title">Arrow Color Tool</span>
+        <div class="color-row">
+            <button id="arrow-white" style="border-color: #fff; color: #fff; flex:1;">White</button>
+            <button id="arrow-yellow" style="border-color: var(--smoke-yellow-actual); color: var(--smoke-yellow-actual); flex:1;">Yellow</button>
         </div>
 
-        <span class="section-title" style="color: var(--bl-red)">BL Units & Pencil</span>
-        <div class="icon-grid">
-            <div class="tactical-icon bl-icon" draggable="true" data-team="bl">1</div>
-            <div class="tactical-icon bl-icon" draggable="true" data-team="bl">2</div>
-            <div class="tactical-icon bl-icon" draggable="true" data-team="bl">3</div>
-            <div class="tactical-icon bl-icon" draggable="true" data-team="bl">4</div>
-            <div class="tactical-icon bl-icon" draggable="true" data-team="bl">5</div>
+        <span class="section-title" style="color: var(--gr-blue)">GR Units</span>
+        <div class="icon-grid" id="gr-grid">
+            <div class="tactical-icon gr-icon" data-team="gr" data-type="player">1</div>
+            <div class="tactical-icon gr-icon" data-team="gr" data-type="player">2</div>
+            <div class="tactical-icon gr-icon" data-team="gr" data-type="player">3</div>
+            <div class="tactical-icon gr-icon" data-team="gr" data-type="player">4</div>
+            <div class="tactical-icon gr-icon" data-team="gr" data-type="player">5</div>
         </div>
-        <div class="tool-row" style="margin-top: 5px;">
-            <div class="toggle-btn" id="toggle-pencil-red">👁️</div>
-            <button id="pencil-red-btn" class="pencil-red-btn">Red Pencil</button>
+
+        <span class="section-title" style="color: var(--bl-red)">BL Units</span>
+        <div class="icon-grid" id="bl-grid">
+            <div class="tactical-icon bl-icon" data-team="bl" data-type="player">1</div>
+            <div class="tactical-icon bl-icon" data-team="bl" data-type="player">2</div>
+            <div class="tactical-icon bl-icon" data-team="bl" data-type="player">3</div>
+            <div class="tactical-icon bl-icon" data-team="bl" data-type="player">4</div>
+            <div class="tactical-icon bl-icon" data-team="bl" data-type="player">5</div>
+        </div>
+
+        <span class="section-title">Drawing Pencils</span>
+        <div class="color-row">
+            <button id="pencil-red-btn" style="border-color: var(--bl-red); color: var(--bl-red); flex:1;">Red Pencil</button>
+            <button id="pencil-blue-btn" style="border-color: var(--gr-blue); color: var(--gr-blue); flex:1;">Blue Pencil</button>
         </div>
 
         <div class="controls">
-            <div class="tool-row">
-                <div class="toggle-btn" id="toggle-arrows">👁️</div>
-                <button id="arrow-tool-btn">Arrow Tool</button>
+            <div class="color-row">
+                <button id="smoke-yellow-btn" data-type="smoke" data-color="yellow" style="color: var(--smoke-yellow); border-color: var(--smoke-yellow); flex:1;">Y-Smoke</button>
+                <button id="smoke-blue-btn" data-type="smoke" data-color="blue" style="color: var(--gr-blue); border-color: var(--gr-blue); flex:1;">B-Smoke</button>
             </div>
-            <button id="smoke-yellow-btn" class="smoke-yellow-btn">Yellow Smoke (S)</button>
-            <button id="smoke-blue-btn" class="gr-icon" style="border-color: var(--gr-blue) !important; color: var(--gr-blue) !important;">Blue Smoke (S)</button>
-            <button id="flash-btn">Flashbang (F)</button>
+            <button id="flash-btn" data-type="flash">Flashbang (F)</button>
+            <button id="c4-btn" data-type="c4" style="color: var(--c4-orange); border-color: var(--c4-orange);">C4 BOMB (C)</button>
             <button id="clear-btn">Clear All</button>
-            <button id="export-btn" style="border-color: var(--accent); color: var(--accent);">Download Strategy</button>
+            <button id="export-btn" style="border-color: var(--accent); color: var(--accent); background: rgba(0,255,136,0.1);">Download Strategy</button>
         </div>
     </aside>
 
@@ -137,13 +121,14 @@
         
         let mapImage = new Image();
         let items = []; 
-        let tool = 'none';
+        let tool = 'none'; 
+        let toolData = null; 
+        let arrowColor = '#ffffff'; 
+        let pencilColor = '#ff3e3e';
         let isDrawing = false;
         let currentPath = [];
         let arrowStart = null;
         let draggedItem = null;
-
-        let showPencilBlue = true, showPencilRed = true, showArrows = true;
 
         mapSelect.onchange = (e) => {
             if(!e.target.value) return;
@@ -163,118 +148,225 @@
         }
         window.addEventListener('resize', resizeCanvas);
 
-        // --- UNIFIED INPUT LOGIC (Desktop + Mobile) ---
         function getPos(e) {
             const rect = canvas.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            return {
-                x: (clientX - rect.left) * (canvas.width / rect.width),
-                y: (clientY - rect.top) * (canvas.height / rect.height)
-            };
+            const clientX = (e.touches ? e.touches[0].clientX : e.clientX);
+            const clientY = (e.touches ? e.touches[0].clientY : e.clientY);
+            return { x: (clientX - rect.left) * (canvas.width / rect.width), y: (clientY - rect.top) * (canvas.height / rect.height) };
         }
 
-        const startAction = (e) => {
+        canvas.addEventListener('contextmenu', (e) => {
+            e.preventDefault(); 
             const pos = getPos(e);
-            if (tool.startsWith('pencil')) {
-                isDrawing = true; currentPath = [pos];
-            } else if (tool === 'arrow') {
-                isDrawing = true; arrowStart = pos;
+            items = items.filter(i => {
+                if (i.x && i.y) {
+                    const dist = Math.sqrt((i.x - pos.x)**2 + (i.y - pos.y)**2);
+                    return dist > 25; 
+                }
+                if (i.type === 'arrow') {
+                    const distStart = Math.sqrt((i.start.x - pos.x)**2 + (i.start.y - pos.y)**2);
+                    const distEnd = Math.sqrt((i.end.x - pos.x)**2 + (i.end.y - pos.y)**2);
+                    return distStart > 30 && distEnd > 30;
+                }
+                if (i.type === 'pencil') {
+                    const distPath = Math.sqrt((i.path[0].x - pos.x)**2 + (i.path[0].y - pos.y)**2);
+                    return distPath > 30;
+                }
+                return true;
+            });
+        });
+
+        const startAction = (e) => {
+            if (e.button === 2) return;
+            const pos = getPos(e);
+            
+            if (tool !== 'none' && tool !== 'pencil' && tool !== 'arrow') {
+                if (toolData.type === 'smoke') {
+                    const blobs = [];
+                    for(let j=0; j<12; j++) {
+                        const dist = Math.random() * 40;
+                        const angle = Math.random() * Math.PI * 2;
+                        blobs.push({ 
+                            ox: Math.cos(angle) * dist, 
+                            oy: Math.sin(angle) * dist, 
+                            r: 20 + Math.random()*15,
+                            distFromCenter: dist, // Used for center-out fade
+                            seed: Math.random() * 100
+                        });
+                    }
+                    items.push({ x: pos.x, y: pos.y, ...toolData, blobs: blobs, life: 0 });
+                } else {
+                    items.push({ x: pos.x, y: pos.y, ...toolData });
+                }
+                tool = 'none'; toolData = null; updateUI(); return;
+            }
+
+            if (tool === 'pencil' || tool === 'arrow') {
+                isDrawing = true; currentPath = [pos]; arrowStart = pos;
             } else {
-                draggedItem = items.find(i => i.type !== 'arrow' && i.type !== 'pencil' && Math.sqrt((i.x - pos.x)**2 + (i.y - pos.y)**2) < 25);
+                draggedItem = items.find(i => i.type !== 'pencil' && i.type !== 'arrow' && Math.sqrt((i.x - pos.x)**2 + (i.y - pos.y)**2) < 25);
             }
         };
 
         const moveAction = (e) => {
             const pos = getPos(e);
-            if (isDrawing) {
-                if (tool.startsWith('pencil')) currentPath.push(pos);
-            } else if (draggedItem) {
-                draggedItem.x = pos.x; draggedItem.y = pos.y;
-            }
+            if (isDrawing) currentPath.push(pos);
+            else if (draggedItem) { draggedItem.x = pos.x; draggedItem.y = pos.y; }
         };
 
         const endAction = () => {
             if (isDrawing) {
-                if (tool.startsWith('pencil') && currentPath.length > 2) {
-                    items.push({ type: 'pencil', path: currentPath, color: tool === 'pencil-blue' ? '#00d4ff' : '#ff3e3e', subType: tool });
-                } else if (tool === 'arrow' && arrowStart) {
-                    const lastPos = currentPath.length > 0 ? currentPath[currentPath.length-1] : arrowStart;
-                    // Logic for arrow end handled by currentMousePos in your original, simplified here
+                if (tool === 'pencil' && currentPath.length > 2) {
+                    items.push({ type: 'pencil', path: currentPath, color: pencilColor });
+                } else if (tool === 'arrow') {
+                    items.push({ type: 'arrow', start: arrowStart, end: currentPath[currentPath.length - 1], color: arrowColor });
                 }
             }
             isDrawing = false; draggedItem = null; currentPath = []; arrowStart = null;
         };
 
         canvas.addEventListener('mousedown', startAction);
-        window.addEventListener('mousemove', (e) => {
-            const pos = getPos(e);
-            window.lastMousePos = pos;
-            moveAction(e);
-        });
+        window.addEventListener('mousemove', moveAction);
         window.addEventListener('mouseup', endAction);
-
-        canvas.addEventListener('touchstart', startAction, {passive: false});
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startAction(e); }, {passive: false});
         canvas.addEventListener('touchmove', (e) => { e.preventDefault(); moveAction(e); }, {passive: false});
         canvas.addEventListener('touchend', endAction);
 
-        // Tool Buttons
-        document.getElementById('pencil-blue-btn').onclick = () => { tool = (tool === 'pencil-blue') ? 'none' : 'pencil-blue'; updateButtons(); };
-        document.getElementById('pencil-red-btn').onclick = () => { tool = (tool === 'pencil-red') ? 'none' : 'pencil-red'; updateButtons(); };
-        document.getElementById('arrow-tool-btn').onclick = () => { tool = (tool === 'arrow') ? 'none' : 'arrow'; updateButtons(); };
-
-        function updateButtons() {
-            document.getElementById('pencil-blue-btn').classList.toggle('active', tool === 'pencil-blue');
-            document.getElementById('pencil-red-btn').classList.toggle('active', tool === 'pencil-red');
-            document.getElementById('arrow-tool-btn').classList.toggle('active', tool === 'arrow');
+        function updateUI() {
+            document.querySelectorAll('button, .tactical-icon').forEach(b => b.classList.remove('active'));
+            if (tool === 'pencil') {
+                if(pencilColor === '#ff3e3e') document.getElementById('pencil-red-btn').classList.add('active');
+                if(pencilColor === '#00d4ff') document.getElementById('pencil-blue-btn').classList.add('active');
+            }
+            if (tool === 'arrow') {
+                if(arrowColor === '#ffffff') document.getElementById('arrow-white').classList.add('active');
+                if(arrowColor === '#FFD700') document.getElementById('arrow-yellow').classList.add('active');
+            }
+            if (toolData && toolData.type === 'player') {
+               const list = toolData.team === 'gr' ? document.querySelectorAll('.gr-icon') : document.querySelectorAll('.bl-icon');
+               list.forEach(i => { if(i.innerText === toolData.label) i.classList.add('active') });
+            }
+            if (toolData && toolData.type === 'smoke') {
+                document.getElementById(toolData.color === 'yellow' ? 'smoke-yellow-btn' : 'smoke-blue-btn').classList.add('active');
+            }
+            if (tool === 'flash') document.getElementById('flash-btn').classList.add('active');
+            if (tool === 'c4') document.getElementById('c4-btn').classList.add('active');
         }
 
-        // Add icons (Simple click for mobile, drag for desktop)
+        document.getElementById('pencil-red-btn').onclick = () => { tool = (tool==='pencil'&&pencilColor==='#ff3e3e')?'none':'pencil'; pencilColor = '#ff3e3e'; updateUI(); };
+        document.getElementById('pencil-blue-btn').onclick = () => { tool = (tool==='pencil'&&pencilColor==='#00d4ff')?'none':'pencil'; pencilColor = '#00d4ff'; updateUI(); };
+        document.getElementById('arrow-white').onclick = () => { tool = (tool==='arrow'&&arrowColor==='#ffffff')?'none':'arrow'; arrowColor = '#ffffff'; updateUI(); };
+        document.getElementById('arrow-yellow').onclick = () => { tool = (tool==='arrow'&&arrowColor==='#FFD700')?'none':'arrow'; arrowColor = '#FFD700'; updateUI(); };
+        
         document.querySelectorAll('.tactical-icon').forEach(icon => {
             icon.onclick = () => {
-                items.push({ x: canvas.width/2, y: canvas.height/2, type: 'player', team: icon.dataset.team, label: icon.innerText });
+                if (toolData && toolData.label === icon.innerText && toolData.team === icon.dataset.team) { tool = 'none'; toolData = null; }
+                else { tool = 'place-player'; toolData = { type: 'player', team: icon.dataset.team, label: icon.innerText }; }
+                updateUI();
             };
         });
 
-        document.getElementById('smoke-yellow-btn').onclick = () => items.push({ x: canvas.width/2, y: canvas.height/2, type: 'smoke', color: 'yellow', seed: Math.random() });
-        document.getElementById('smoke-blue-btn').onclick = () => items.push({ x: canvas.width/2, y: canvas.height/2, type: 'smoke', color: 'blue', seed: Math.random() });
-        document.getElementById('clear-btn').onclick = () => items = [];
+        document.getElementById('smoke-yellow-btn').onclick = () => { tool = (toolData?.color === 'yellow') ? 'none' : 'place-smoke'; toolData = (tool==='none')?null:{ type: 'smoke', color: 'yellow' }; updateUI(); };
+        document.getElementById('smoke-blue-btn').onclick = () => { tool = (toolData?.color === 'blue') ? 'none' : 'place-smoke'; toolData = (tool==='none')?null:{ type: 'smoke', color: 'blue' }; updateUI(); };
+        document.getElementById('flash-btn').onclick = () => { tool = (tool === 'flash') ? 'none' : 'flash'; toolData = (tool==='none')?null:{ type: 'flash' }; updateUI(); };
+        document.getElementById('c4-btn').onclick = () => { tool = (tool === 'c4') ? 'none' : 'c4'; toolData = (tool==='none')?null:{ type: 'c4' }; updateUI(); };
+        document.getElementById('clear-btn').onclick = () => { items = []; tool = 'none'; toolData = null; updateUI(); };
         document.getElementById('export-btn').onclick = () => {
-            const link = document.createElement('a');
-            link.download = 'MEERH_Tactic.png';
-            link.href = canvas.toDataURL();
-            link.click();
+            const link = document.createElement('a'); link.download = 'MEERH_Tactical.png';
+            link.href = canvas.toDataURL(); link.click();
         };
 
-        function animate() {
+        function drawArrow(ctx, fX, fY, tX, tY, color) {
+            const head = 15; const angle = Math.atan2(tY - fY, tX - fX);
+            ctx.beginPath(); ctx.moveTo(fX, fY); ctx.lineTo(tX, tY);
+            ctx.strokeStyle = color; ctx.lineWidth = 4; ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(tX, tY);
+            ctx.lineTo(tX - head * Math.cos(angle - Math.PI/6), tY - head * Math.sin(angle - Math.PI/6));
+            ctx.lineTo(tX - head * Math.cos(angle + Math.PI/6), tY - head * Math.sin(angle + Math.PI/6));
+            ctx.closePath(); ctx.fillStyle = color; ctx.fill();
+        }
+
+        function animate(time) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             if (mapImage.src) ctx.drawImage(mapImage, 0, 0, canvas.width, canvas.height);
             
-            if (isDrawing && tool.startsWith('pencil')) {
-                ctx.strokeStyle = tool === 'pencil-blue' ? '#00d4ff' : '#ff3e3e';
-                ctx.lineWidth = 3; ctx.beginPath();
-                ctx.moveTo(currentPath[0].x, currentPath[0].y);
-                currentPath.forEach(p => ctx.lineTo(p.x, p.y)); ctx.stroke();
+            if (isDrawing) {
+                if (tool === 'pencil') {
+                    ctx.strokeStyle = pencilColor; ctx.lineWidth = 3; ctx.beginPath(); 
+                    ctx.moveTo(currentPath[0].x, currentPath[0].y);
+                    currentPath.forEach(p => ctx.lineTo(p.x, p.y)); ctx.stroke();
+                } else if (tool === 'arrow' && currentPath.length > 0) {
+                    drawArrow(ctx, arrowStart.x, arrowStart.y, currentPath[currentPath.length-1].x, currentPath[currentPath.length-1].y, arrowColor);
+                }
             }
 
             items.forEach(i => {
                 if (i.type === 'pencil') {
                     ctx.strokeStyle = i.color; ctx.lineWidth = 3; ctx.beginPath();
-                    ctx.moveTo(i.path[0].x, i.path[0].y);
-                    i.path.forEach(p => ctx.lineTo(p.x, p.y)); ctx.stroke();
+                    ctx.moveTo(i.path[0].x, i.path[0].y); i.path.forEach(p => ctx.lineTo(p.x, p.y)); ctx.stroke();
+                } else if (i.type === 'arrow') {
+                    drawArrow(ctx, i.start.x, i.start.y, i.end.x, i.end.y, i.color);
                 } else if (i.type === 'player') {
                     ctx.beginPath(); ctx.arc(i.x, i.y, 18, 0, Math.PI*2);
                     ctx.fillStyle = i.team === 'gr' ? 'rgba(0, 212, 255, 0.7)' : 'rgba(255, 62, 62, 0.7)';
-                    ctx.fill(); ctx.fillStyle = "white"; ctx.textAlign="center"; ctx.fillText(i.label, i.x, i.y+5);
+                    ctx.fill(); ctx.fillStyle = "white"; ctx.textAlign="center"; ctx.font = "bold 14px Arial"; ctx.fillText(i.label, i.x, i.y+5);
                 } else if (i.type === 'smoke') {
-                    ctx.beginPath(); ctx.arc(i.x, i.y, 25, 0, Math.PI*2);
-                    ctx.fillStyle = i.color === 'blue' ? "rgba(0, 212, 255, 0.4)" : "rgba(252, 241, 74, 0.4)";
-                    ctx.fill();
+                    // MUCH slower life cycle (0.002 instead of 0.006)
+                    i.life += 0.0025; 
+                    if (i.life > 1) i.life = 0;
+
+                    ctx.save();
+                    ctx.filter = 'blur(15px)';
+                    
+                    const smokeColor = i.color === 'blue' ? "#00d4ff" : "#fcf14a";
+
+                    i.blobs.forEach((b, idx) => {
+                        const t = time / 2500;
+                        const driftX = Math.sin(t + b.seed) * 15;
+                        const driftY = Math.cos(t * 0.8 + b.seed) * 15;
+                        const warp = Math.sin(t * 0.5 + idx) * 8;
+
+                        let bAlpha = 0.45;
+                        let bSize = b.r + warp;
+
+                        // Middle-out Dissipation Logic
+                        if (i.life < 0.2) { 
+                            // Fade in
+                            bAlpha *= (i.life / 0.2);
+                        } else if (i.life > 0.6) {
+                            // The closer to center, the faster it disappears
+                            const normalizedDist = b.distFromCenter / 45; 
+                            const deathTrigger = 0.6 + (normalizedDist * 0.3);
+                            
+                            if (i.life > deathTrigger) {
+                                const deathProgress = (i.life - deathTrigger) / (1 - deathTrigger);
+                                bAlpha *= (1 - deathProgress);
+                                bSize *= (1 - deathProgress);
+                            }
+                        }
+
+                        ctx.globalAlpha = bAlpha;
+                        ctx.beginPath();
+                        ctx.arc(i.x + b.ox + driftX, i.y + b.oy + driftY, bSize, 0, Math.PI * 2);
+                        ctx.fillStyle = smokeColor;
+                        ctx.fill();
+                    });
+                    ctx.restore();
+                    
+                    ctx.fillStyle = "white"; ctx.textAlign="center"; ctx.font = "bold 16px Arial"; ctx.fillText("S", i.x, i.y+6);
+                } else if (i.type === 'flash') {
+                    ctx.beginPath(); ctx.arc(i.x, i.y, 20, 0, Math.PI*2);
+                    ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+                    ctx.fill(); ctx.fillStyle = "black"; ctx.font = "bold 14px Arial"; ctx.fillText("F", i.x, i.y+5);
+                } else if (i.type === 'c4') {
+                    ctx.fillStyle = "#ff9d00"; ctx.fillRect(i.x-12, i.y-10, 24, 20);
+                    ctx.strokeStyle = "white"; ctx.lineWidth = 2; ctx.strokeRect(i.x-12, i.y-10, 24, 20);
+                    ctx.fillStyle = "black"; ctx.font = "bold 10px Arial"; ctx.fillText("C4", i.x, i.y+4);
                 }
             });
             requestAnimationFrame(animate);
         }
-        animate();
+        animate(0);
     </script>
 </body>
 </html>
