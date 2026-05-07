@@ -120,15 +120,15 @@
             const status = document.getElementById('status');
             
             if(currentMap && currentTeam) {
-                // This combines map and team for the filename (e.g., blackwidow_ag.docx)
+                // This will create "blackwidow_ag.docx"
                 const fileName = `${currentMap}_${currentTeam}.docx`;
                 
-                // FIXED THE URL: It needs the filename at the end
-                const fileUrl = `https://maszkara2024.github.io/Tactical-Map/strategies.html`;
+                // Use the EXACT case-sensitive name of your GitHub repo: Tactical-Map
+                const fileUrl = `https://maszkara2024.github.io/Tactical-Map/${fileName}`;
                 
                 status.innerText = `Viewing: ${fileName}`;
                 
-                // Tell Microsoft to load your GitHub file
+                // This sends the file to Microsoft's viewer
                 viewer.src = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
                 viewer.style.display = "block";
             }
