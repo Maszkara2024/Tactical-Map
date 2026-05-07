@@ -22,7 +22,6 @@
 
         .section-title { color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin: 20px 0; font-size: 0.9rem; }
 
-        /* Grid for Maps and Teams */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -49,12 +48,19 @@
 
         #display-area {
             margin-top: 30px;
-            padding: 20px;
+            padding: 10px;
             border: 2px dashed var(--border);
-            min-height: 300px;
+            min-height: 400px;
+            background: #000;
         }
 
-        img { max-width: 100%; height: auto; border: 1px solid var(--accent); margin-top: 20px; }
+        /* The Word Viewer Styling */
+        #word-viewer {
+            width: 100%;
+            height: 800px;
+            border: none;
+            display: none; /* Hidden until map/team is picked */
+        }
         
         .back-link { display: block; margin-top: 40px; color: #888; text-decoration: none; font-size: 0.8rem; }
     </style>
@@ -65,28 +71,28 @@
 
     <div class="section-title">Step 1: Select Map</div>
     <div class="grid" id="map-grid">
-        <div class="card" onclick="selectMap(this, 'Blackwidow')">Blackwidow</div>
-        <div class="card" onclick="selectMap(this, 'Subbase')">Subbase</div>
-        <div class="card" onclick="selectMap(this, 'Mexico')">New Mexico</div>
-        <div class="card" onclick="selectMap(this, 'Compound')">Compound 2</div>
-        <div class="card" onclick="selectMap(this, 'Ankara')">Ankara</div>
-        <div class="card" onclick="selectMap(this, 'EagleEye')">Eagle Eye</div>
-        <div class="card" onclick="selectMap(this, 'Port')">Port</div>
+        <div class="card" onclick="selectMap(this, 'blackwidow')">Blackwidow</div>
+        <div class="card" onclick="selectMap(this, 'subbase')">Subbase</div>
+        <div class="card" onclick="selectMap(this, 'mexico')">New Mexico</div>
+        <div class="card" onclick="selectMap(this, 'compound')">Compound 2</div>
+        <div class="card" onclick="selectMap(this, 'ankara')">Ankara</div>
+        <div class="card" onclick="selectMap(this, 'eagleeye2')">Eagle Eye</div>
+        <div class="card" onclick="selectMap(this, 'port')">Port</div>
     </div>
 
     <div class="section-title">Step 2: Select Team</div>
     <div class="grid" id="team-grid">
-        <div class="card" onclick="selectTeam(this, 'All Gamers')">All Gamers</div>
-        <div class="card" onclick="selectTeam(this, 'Stallions')">Stallions</div>
-        <div class="card" onclick="selectTeam(this, 'Al Qadsiah')">Al Qadsiah</div>
-        <div class="card" onclick="selectTeam(this, 'Evolution')">Evolution Power</div>
-        <div class="card" onclick="selectTeam(this, 'Baisha')">Baisha Gaming</div>
-        <div class="card" onclick="selectTeam(this, 'XRock')">XRock</div>
+        <div class="card" onclick="selectTeam(this, 'ag')">All Gamers</div>
+        <div class="card" onclick="selectTeam(this, 'stallions')">Stallions</div>
+        <div class="card" onclick="selectTeam(this, 'alq')">Al Qadsiah</div>
+        <div class="card" onclick="selectTeam(this, 'evo')">Evolution Power</div>
+        <div class="card" onclick="selectTeam(this, 'baisha')">Baisha Gaming</div>
+        <div class="card" onclick="selectTeam(this, 'xrock')">XRock</div>
     </div>
 
     <div id="display-area">
         <h2 id="status">Select a Map and Team to view strategy</h2>
-        <div id="image-container"></div>
+        <iframe id="word-viewer" src=""></iframe>
     </div>
 
     <a href="index.html" class="back-link">← RETURN TO TACTICAL TOOL</a>
@@ -96,7 +102,6 @@
         let currentTeam = "";
 
         function selectMap(element, mapName) {
-            // Remove active class from other maps
             document.querySelectorAll('#map-grid .card').forEach(c => c.classList.remove('active'));
             element.classList.add('active');
             currentMap = mapName;
@@ -104,28 +109,30 @@
         }
 
         function selectTeam(element, teamName) {
-            // Remove active class from other teams
             document.querySelectorAll('#team-grid .card').forEach(c => c.classList.remove('active'));
             element.classList.add('active');
             currentTeam = teamName;
             updateDisplay();
         }
 
-       function updateDisplay() {
-    const viewer = document.getElementById('word-viewer');
-    
-    if(currentMap && currentTeam) {
-        const fileName = `${currentMap}_${currentTeam}.docx`;
-        
-        // Use YOUR actual GitHub link here
-        const fileUrl = `https://maszkara2024.github.io/tactical-map`;
-        
-        // This is the "Magic" link that lets Microsoft open the file
-        viewer.src = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
-        
-        viewer.style.display = "block";
-    }
-}
+        function updateDisplay() {
+            const viewer = document.getElementById('word-viewer');
+            const status = document.getElementById('status');
+            
+            if(currentMap && currentTeam) {
+                // This combines map and team for the filename (e.g., blackwidow_ag.docx)
+                const fileName = `${currentMap}_${currentTeam}.docx`;
+                
+                // FIXED THE URL: It needs the filename at the end
+                const fileUrl = `https://maszkara2024.github.io/Tactical-Map/strategies.html`;
+                
+                status.innerText = `Viewing: ${fileName}`;
+                
+                // Tell Microsoft to load your GitHub file
+                viewer.src = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
+                viewer.style.display = "block";
+            }
+        }
     </script>
 </body>
 </html>
