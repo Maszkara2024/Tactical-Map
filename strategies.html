@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEERH. | Strategies</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0c;
+            --panel-bg: #151518;
+            --accent: #00ff88;
+            --border: #333;
+        }
+
+        body {
+            margin: 0; padding: 20px;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            text-align: center;
+        }
+
+        .section-title { color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin: 20px 0; font-size: 0.9rem; }
+
+        /* Grid for Maps and Teams */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            max-width: 1000px;
+            margin: 0 auto 30px auto;
+        }
+
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            padding: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .card:hover, .card.active {
+            border-color: var(--accent);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        #display-area {
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px dashed var(--border);
+            min-height: 300px;
+        }
+
+        img { max-width: 100%; height: auto; border: 1px solid var(--accent); margin-top: 20px; }
+        
+        .back-link { display: block; margin-top: 40px; color: #888; text-decoration: none; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <h1 style="letter-spacing: 5px;">STRATEGIES</h1>
+
+    <div class="section-title">Step 1: Select Map</div>
+    <div class="grid" id="map-grid">
+        <div class="card" onclick="selectMap(this, 'Blackwidow')">Blackwidow</div>
+        <div class="card" onclick="selectMap(this, 'Subbase')">Subbase</div>
+        <div class="card" onclick="selectMap(this, 'Mexico')">New Mexico</div>
+        <div class="card" onclick="selectMap(this, 'Compound')">Compound 2</div>
+        <div class="card" onclick="selectMap(this, 'Ankara')">Ankara</div>
+        <div class="card" onclick="selectMap(this, 'EagleEye')">Eagle Eye</div>
+        <div class="card" onclick="selectMap(this, 'Port')">Port</div>
+    </div>
+
+    <div class="section-title">Step 2: Select Team</div>
+    <div class="grid" id="team-grid">
+        <div class="card" onclick="selectTeam(this, 'All Gamers')">All Gamers</div>
+        <div class="card" onclick="selectTeam(this, 'Stallions')">Stallions</div>
+        <div class="card" onclick="selectTeam(this, 'Al Qadsiah')">Al Qadsiah</div>
+        <div class="card" onclick="selectTeam(this, 'Evolution')">Evolution Power</div>
+        <div class="card" onclick="selectTeam(this, 'Baisha')">Baisha Gaming</div>
+        <div class="card" onclick="selectTeam(this, 'XRock')">XRock</div>
+    </div>
+
+    <div id="display-area">
+        <h2 id="status">Select a Map and Team to view strategy</h2>
+        <div id="image-container"></div>
+    </div>
+
+    <a href="index.html" class="back-link">← RETURN TO TACTICAL TOOL</a>
+
+    <script>
+        let currentMap = "";
+        let currentTeam = "";
+
+        function selectMap(element, mapName) {
+            // Remove active class from other maps
+            document.querySelectorAll('#map-grid .card').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+            currentMap = mapName;
+            updateDisplay();
+        }
+
+        function selectTeam(element, teamName) {
+            // Remove active class from other teams
+            document.querySelectorAll('#team-grid .card').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+            currentTeam = teamName;
+            updateDisplay();
+        }
+
+       function updateDisplay() {
+    const viewer = document.getElementById('word-viewer');
+    
+    if(currentMap && currentTeam) {
+        const fileName = `${currentMap}_${currentTeam}.docx`;
+        
+        // Use YOUR actual GitHub link here
+        const fileUrl = `https://maszkara2024.github.io/tactical-map`;
+        
+        // This is the "Magic" link that lets Microsoft open the file
+        viewer.src = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
+        
+        viewer.style.display = "block";
+    }
+}
+    </script>
+</body>
+</html>
