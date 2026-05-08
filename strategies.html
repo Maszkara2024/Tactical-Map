@@ -24,21 +24,22 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 10px;
             max-width: 1000px;
-            margin: 0 auto 30px auto;
+            margin: 0 auto 25px auto;
         }
 
         .card {
             background: var(--panel-bg);
             border: 1px solid var(--border);
-            padding: 15px;
+            padding: 12px;
             cursor: pointer;
             transition: 0.2s;
             text-transform: uppercase;
             font-weight: bold;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
         }
 
         .card:hover, .card.active {
@@ -48,18 +49,21 @@
 
         #display-area {
             margin-top: 30px;
-            padding: 10px;
+            padding: 15px;
             border: 2px dashed var(--border);
-            min-height: 400px;
+            border-radius: 8px;
             background: #000;
+            max-width: 1100px;
+            margin: 30px auto;
         }
 
-        /* The Word Viewer Styling */
-        #word-viewer {
+        /* The Frame Container */
+        #pdf-viewer {
             width: 100%;
             height: 800px;
             border: none;
-            display: none; /* Hidden until map/team is picked */
+            display: none;
+            background: white;
         }
         
         .back-link { display: block; margin-top: 40px; color: #888; text-decoration: none; font-size: 0.8rem; }
@@ -69,7 +73,7 @@
 
     <h1 style="letter-spacing: 5px;">STRATEGIES</h1>
 
-    <div class="section-title">Step 1: Select Map</div>
+    <div class="section-title">1. Select Map</div>
     <div class="grid" id="map-grid">
         <div class="card" onclick="selectMap(this, 'blackwidow')">Blackwidow</div>
         <div class="card" onclick="selectMap(this, 'subbase')">Subbase</div>
@@ -80,7 +84,7 @@
         <div class="card" onclick="selectMap(this, 'port')">Port</div>
     </div>
 
-    <div class="section-title">Step 2: Select Team</div>
+    <div class="section-title">2. Select Team</div>
     <div class="grid" id="team-grid">
         <div class="card" onclick="selectTeam(this, 'ag')">All Gamers</div>
         <div class="card" onclick="selectTeam(this, 'stallions')">Stallions</div>
@@ -91,8 +95,8 @@
     </div>
 
     <div id="display-area">
-        <h2 id="status">Select a Map and Team to view strategy</h2>
-        <iframe id="word-viewer" src=""></iframe>
+        <h2 id="status">Select Map & Team</h2>
+        <iframe id="pdf-viewer"></iframe>
     </div>
 
     <a href="index.html" class="back-link">← RETURN TO TACTICAL TOOL</a>
@@ -101,35 +105,33 @@
         let currentMap = "";
         let currentTeam = "";
 
-        function selectMap(element, mapName) {
+        function selectMap(element, mapId) {
             document.querySelectorAll('#map-grid .card').forEach(c => c.classList.remove('active'));
             element.classList.add('active');
-            currentMap = mapName;
+            currentMap = mapId;
             updateDisplay();
         }
 
-        function selectTeam(element, teamName) {
+        function selectTeam(element, teamId) {
             document.querySelectorAll('#team-grid .card').forEach(c => c.classList.remove('active'));
             element.classList.add('active');
-            currentTeam = teamName;
+            currentTeam = teamId;
             updateDisplay();
         }
 
         function updateDisplay() {
-            const viewer = document.getElementById('word-viewer');
+            const viewer = document.getElementById('pdf-viewer');
             const status = document.getElementById('status');
             
             if(currentMap && currentTeam) {
-                // This will create "blackwidow_ag.docx"
-                const fileName = `${currentMap}_${currentTeam}.docx`;
-                
-                // Use the EXACT case-sensitive name of your GitHub repo: Tactical-Map
+                const fileName = `${currentMap}_${currentTeam}.pdf`;
+                // Use your EXACT GitHub URL
                 const fileUrl = `https://maszkara2024.github.io/Tactical-Map/${fileName}`;
                 
-                status.innerText = `Viewing: ${fileName}`;
+                status.innerText = `VIEWING: ${fileName}`;
                 
-                // This sends the file to Microsoft's viewer
-                viewer.src = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
+                // This Google Docs wrapper FORCES the PDF to show in the browser
+                viewer.src = `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`;
                 viewer.style.display = "block";
             }
         }
